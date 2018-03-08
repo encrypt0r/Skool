@@ -39,8 +39,6 @@
       </div>
     </footer>
   </div>
-
-  <?php mysqli_close() ?>
 </body>
 
 </html>
