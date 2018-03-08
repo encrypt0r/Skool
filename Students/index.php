@@ -1,10 +1,13 @@
 <?php 
+ $pathToRoot='../';
  include('../header.php');
  $query = "SELECT StudentId, StudentName, StudentStage FROM Students";
   $result = mysqli_query($mysqli, $query);
 ?>
 
-<table class="table">
+<div class="container">
+  <a href="add.php">Add</a>
+  <table class="table">
     <thead>
         <tr>
             <th scope="col">Name</th>
@@ -17,7 +20,7 @@
         {
             echo '
             <tr>
-                <th scope="row">'. $row['StudentName'] .'</th>
+                <td>'. $row['StudentName'] .'</th>
                 <td>'. $row['StudentStage'] .'</td>
             </tr>
             ';

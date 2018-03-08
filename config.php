@@ -1,5 +1,5 @@
 <?php
-
+$siteHome = 'http://skool-encryptor699267.codeanyapp.com/Skool';
 $databaseHost = 'localhost';
 $databaseName = 'Skool';
 // Define $databaseUsername in password.php
