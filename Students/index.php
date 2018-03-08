@@ -1,4 +1,8 @@
-<?php include('header.php') ?> $query = "SELECT StudentId, StudentName, StudentStage FROM Students"; $result = mysqli_query($mysqli, $query);
+<?php 
+ include('../header.php')
+ $query = "SELECT StudentId, StudentName, StudentStage FROM Students";
+  $result = mysqli_query($mysqli, $query);
+?>
 
 <table class="table">
     <thead>
@@ -22,4 +26,4 @@
     </tbody>
 </table>
 
-<?php include('footer.php') ?>
+<?php include('../footer.php') ?>
