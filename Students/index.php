@@ -2,7 +2,7 @@
  $pathToRoot='../';
  include('../header.php');
  $query = "SELECT StudentId, StudentName, StudentStage FROM Students";
-  $result = mysqli_query($mysqli, $query);
+ $result = mysqli_query($mysqli, $query);
 ?>
 
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -19,14 +19,14 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal" id="confirm-delete">Delete</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete">Delete</button>
       </div>
     </div>
   </div>
 </div>
 
 <div class="container">
-  <a href="add.php">Add Student</a>
+  <a href="add.php">Add a new student</a>
   <hr>
   <div class="row">
     <table id="table" class="table table-striped">
@@ -47,7 +47,7 @@
                   <td>'. $row['StudentStage'] .'</td>
                   <td class="mx-auto text-center">
                   <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#deleteModal" data-name="' . $row['StudentName'] .'" data-id="' . $row['StudentId'] . '">Delete</button>
-                  <a class="btn btn-primary delete-button" href="edit.php?id=' . $row['StudentId'] . '">Edit</button>
+                  <a class="btn btn-primary delete-button" href="edit.php?id=' . $row['StudentId']  . '">Edit</button>
                   </td> 
               </tr>
               ';
@@ -59,14 +59,53 @@
 <script>
   $(document).ready(function() {
      var table = $("#table").DataTable();
-    
+     
+     var currentItem = -1;
      $(".delete-button").click(function() {
         $(this).parent().parent().addClass('selected');
         $("#item-name").text($(this).data('name'));
+        currentItem = $(this).data('id');
      });
     
+     var deleteRequest;
      $("#confirm-delete").click(function() {
-       table.row('.selected').remove().draw( false );
+       
+       console.log(currentItem);
+       if (currentItem == -1)
+       {
+           $('#deleteModal').modal('hide');
+           return;
+       }
+       
+       if (deleteRequest)
+         deleteRequest.abort();
+       
+       deleteRequest = $.ajax({
+           url: "delete.php?id=" + currentItem,
+           type: "post"
+       });
+       
+       deleteRequest.done(function (response, textStatus, jqXHR){
+        // Log a message to the console
+        table.row('.selected').remove().draw(false);
+       });
+
+       // Callback handler that will be called on failure
+       deleteRequest.fail(function (jqXHR, textStatus, errorThrown){
+           // Log the error to the console
+           console.error(
+               "The following error occurred: "+
+               textStatus, errorThrown
+           );
+       });
+       
+       // Callback handler that will be called regardless
+       // if the request failed or succeeded
+       deleteRequest.always(function () {
+           // Reenable the inputs
+           $('#deleteModal').modal('hide');
+       });
+
      })
   });
 </script>
