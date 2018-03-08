@@ -1,5 +1,5 @@
 <?php 
- include('../header.php')
+ include('../header.php');
  $query = "SELECT StudentId, StudentName, StudentStage FROM Students";
   $result = mysqli_query($mysqli, $query);
 ?>
